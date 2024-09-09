@@ -1,4 +1,5 @@
 import logoImg from '../assets/logo.jpg';
+import Button from './Button.jsx';
 
 export default function Header() {
     return (
@@ -8,7 +9,8 @@ export default function Header() {
                 <h1>La Nourriture</h1>
             </div>
             <nav>
-                <button id="button">Cart {0}</button>
+                {/* Just writting the name of a boolean prop will set its value to true in child */}
+                <Button textOnly>Cart {0}</Button>
             </nav>
         </header>
     )
