@@ -4,6 +4,7 @@ import Modal from "./Modal.jsx";
 import CartContext from "../store/CartContext.jsx";
 import UserProgressContext from '../store/UserProgressContext.jsx';
 import Button from "./Button.jsx";
+import CartItem from "./CartItem.jsx";
 
 export default function Cart() {
     const cartContext = useContext(CartContext);
@@ -24,14 +25,12 @@ export default function Cart() {
     return <Modal className="cart" open={userProgressContext.progress === 'cart'}>
         <h2>Your Cart</h2>
         <ul>
-            {cartContext.items.map((item) => <li key={item.id}>
-                {item.name} - {item.quantity}
-            </li>)}
+            {cartContext.items.map((item) => <CartItem key={item.id} item={item}></CartItem>)}
         </ul>
         <p className="cart-total">{currencyFormatter.format(totalPrice)}</p>
         <p className="modal-actions">
             <Button textOnly onClick={handleCloseCart}>Close</Button>
             <Button onClick={handleGoToCheckout}>Go to checkout</Button>
         </p>
-    </Modal>
+    </Modal>;
 }

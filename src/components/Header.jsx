@@ -26,5 +26,5 @@ export default function Header() {
                 <Button textOnly onClick={handleShowCart}>Cart ({totalNumberOfItemsInCart})</Button>
             </nav>
         </header>
-    )
+    );
 }

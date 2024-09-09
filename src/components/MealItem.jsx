@@ -22,5 +22,5 @@ export default function MealItem({mealItem}) {
                 <Button onClick={addMealItem}>Add to cart</Button>
             </p>
         </article>
-    </li>
+    </li>;
 }

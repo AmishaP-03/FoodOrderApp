@@ -40,5 +40,5 @@ export default function Meals() {
                 (<MealItem key={fetchedMeal.id} mealItem={fetchedMeal}/>)
             )}
         </ul>
-    )
+    );
 }
