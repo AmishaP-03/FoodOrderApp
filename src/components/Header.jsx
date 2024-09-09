@@ -1,7 +1,14 @@
+import { useContext } from 'react';
 import logoImg from '../assets/logo.jpg';
 import Button from './Button.jsx';
+import CartContext from '../store/CartContext.jsx';
 
 export default function Header() {
+    const cartContext = useContext(CartContext);
+    const totalNumberOfItemsInCart = cartContext.items.reduce((total, item) => {
+        return total + item.quantity;
+    }, 0);
+
     return (
         <header id="main-header">
             <div id="title">
@@ -10,7 +17,7 @@ export default function Header() {
             </div>
             <nav>
                 {/* Just writting the name of a boolean prop will set its value to true in child */}
-                <Button textOnly>Cart {0}</Button>
+                <Button textOnly>Cart ({totalNumberOfItemsInCart})</Button>
             </nav>
         </header>
     )
