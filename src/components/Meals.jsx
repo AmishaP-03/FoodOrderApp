@@ -1,5 +1,6 @@
 import MealItem from "./MealItem.jsx";
 import useHttp from "../hooks/useHttp.js";
+import Error from "./Error.jsx";
 
 export default function Meals() {
     // State to manage the fetched meals
@@ -51,5 +52,7 @@ export default function Meals() {
         );
     }
 
-    return <p class="meal-loading-text">Loading meals....</p>;
+    if (isLoading) return <p class="meal-loading-text">Loading meals....</p>;
+
+    if (error) return <Error title="Failed to fetch meals" message={error} />;
 }

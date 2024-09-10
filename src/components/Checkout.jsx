@@ -5,8 +5,24 @@ import {currencyFormatter} from '../utils/formatting.js';
 import Input from "./Input.jsx";
 import Button from "./Button.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
+import useHttp from "../hooks/useHttp.js";
+import Error from "./Error.jsx";
+
+const requestConfig = {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    }
+};
 
 export default function Checkout() {
+    const {
+        data,
+        isLoading,
+        error,
+        sendRequest
+    } = useHttp('http://localhost:3000/orders', requestConfig);
+
     const cartContext = useContext(CartContext);
     const totalPriceToPay = cartContext.items.reduce((total, item) => {
         return total + item.quantity*item.price;
@@ -25,18 +41,36 @@ export default function Checkout() {
         const formData = new FormData(event.target);
         const formDataInJSObjectFormat = Object.fromEntries(formData.entries()); // alt -> const name = formData.get("name") ... same for each input
 
-        fetch('http://localhost:3000/orders', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                order: {
-                    items: cartContext.items,
-                    customer: formDataInJSObjectFormat
-                }
-            })
-        })
+        sendRequest(JSON.stringify({
+            order: {
+                items: cartContext.items,
+                customer: formDataInJSObjectFormat
+            }
+        }));
+
+        // fetch('http://localhost:3000/orders', {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({
+        //         order: {
+        //             items: cartContext.items,
+        //             customer: formDataInJSObjectFormat
+        //         }
+        //     })
+        // })
+    }
+
+    if (data && !error) {
+        return <Modal open={userProgressContext.progress === 'checkout'} onClose={handleClose}>
+            <h2>Success</h2>
+            <p>Your order was placed successfully!</p>
+            <p>We will get back to your with more details via email within the next few minutes.</p>
+            <div className="modal-actions">
+                <Button textOnly onClick={handleClose}>Okay</Button>
+            </div>
+        </Modal>;
     }
 
     return <Modal open={userProgressContext.progress === 'checkout'} onClose={handleClose}>
@@ -53,10 +87,12 @@ export default function Checkout() {
                 <Input label="City" type="text" id="city" />
             </div>
 
-            <div className="modal-actions">
+            {error && <Error title="Failed to place order" message={error} />}
+
+            {!isLoading && <div className="modal-actions">
                 <Button type="button" textOnly onClick={handleClose}>Close</Button> {/* type = button so that clicking on close button does not submits the form */}
                 <Button>Place order</Button>
-            </div>
+            </div>}
         </form>
     </Modal>;
 }

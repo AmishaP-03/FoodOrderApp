@@ -264,3 +264,14 @@ h1 {
     transform: translateY(0);
   }
 }
+
+.error {
+  text-align: center;
+  font-size: smaller;
+  background-color: rgb(245, 119, 144);
+  color: #2c2306;
+  border-radius: 0.3rem;
+  padding: 0.4rem;
+  width: 50%;
+  margin: auto;
+}
