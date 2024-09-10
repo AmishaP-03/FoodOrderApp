@@ -107,6 +107,10 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+.meal-loading-text {
+  text-align: center;
+}
+
 .cart h2 {
   margin: 1rem 0;
 }

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
 import MealItem from "./MealItem.jsx";
+import useHttp from "../hooks/useHttp.js";
 
 export default function Meals() {
     // State to manage the fetched meals
-    const [fetchedMeals, updateFetchedMeals] = useState([]);
+    // const [fetchedMeals, updateFetchedMeals] = useState([]);
 
     // To avoid infinite loops, we will call the getMeals function from inside useEffecr hook
 
@@ -15,30 +15,41 @@ export default function Meals() {
      * 
      * Easy way - remove this dependency on externally defined function by defining it inside useEffect itself.
      */
-    useEffect(() => {
-        // Fetch the offered meals from backend
-        async function getMeals() {
-            const response = await fetch('http://localhost:3000/meals');
+    // useEffect(() => {
+    //     // Fetch the offered meals from backend
+    //     async function getMeals() {
+    //         const response = await fetch('http://localhost:3000/meals');
 
-            if (!response.ok) {
-                // Error handling
-            }
+    //         if (!response.ok) {
+    //             // Error handling
+    //         }
 
-            const meals = await response.json();
+    //         const meals = await response.json();
 
-            // Update the backend response in state as soon as we have it.
-            // This will re render the component with the updated list of offered meals
-            updateFetchedMeals(meals);
-        }
+    //         // Update the backend response in state as soon as we have it.
+    //         // This will re render the component with the updated list of offered meals
+    //         updateFetchedMeals(meals);
+    //     }
 
-        getMeals();
-    }, []);
+    //     getMeals();
+    // }, []);
 
-    return (
-        <ul id="meals">
-            {fetchedMeals.map((fetchedMeal) => 
-                (<MealItem key={fetchedMeal.id} mealItem={fetchedMeal}/>)
-            )}
-        </ul>
-    );
+    // Outsource the above logic to useHttp custom hook
+    const {
+        data,
+        isLoading,
+        error
+    } = useHttp('http://localhost:3000/meals');
+
+    if (data) {
+        return (
+            <ul id="meals">
+                {data.map((fetchedMeal) => 
+                    (<MealItem key={fetchedMeal.id} mealItem={fetchedMeal}/>)
+                )}
+            </ul>
+        );
+    }
+
+    return <p class="meal-loading-text">Loading meals....</p>;
 }
