@@ -18,17 +18,38 @@ export default function Checkout() {
         userProgressContext.hideCheckout();
     }
 
+    function handleSubmit(event) {
+        event.preventDefault(); 
+
+        //event.target -> form data managed by browser
+        const formData = new FormData(event.target);
+        const formDataInJSObjectFormat = Object.fromEntries(formData.entries()); // alt -> const name = formData.get("name") ... same for each input
+
+        fetch('http://localhost:3000/orders', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                order: {
+                    items: cartContext.items,
+                    customer: formDataInJSObjectFormat
+                }
+            })
+        })
+    }
+
     return <Modal open={userProgressContext.progress === 'checkout'} onClose={handleClose}>
-        <form>
+        <form onSubmit={handleSubmit}>
             <h2>Checkout</h2>
             <p>Total price: {currencyFormatter.format(totalPriceToPay)}</p>
 
-            <Input label="Full name" type="text" id="full-name" />
+            <Input label="Full name" type="text" id="name" />
             <Input label="Email address" type="email" id="email" />
-            <Input label="Delivery address" type="text" id="delivery-address" />
+            <Input label="Street" type="text" id="street" />
 
             <div className="control-row">
-                <Input label="Pin code" type="text" id="pin-code" />
+                <Input label="Postal code" type="text" id="postal-code" /> {/** Id should be same as the string defined on backend */}
                 <Input label="City" type="text" id="city" />
             </div>
 
