@@ -27,10 +27,11 @@ export default function Cart() {
         <ul>
             {cartContext.items.map((item) => <CartItem key={item.id} item={item}></CartItem>)}
         </ul>
-        <p className="cart-total">{currencyFormatter.format(totalPrice)}</p>
+        {cartContext.items.length > 0 ? <p className="cart-total">{currencyFormatter.format(totalPrice)}</p> : <p>Cart empty!</p>}
+
         <p className="modal-actions">
             <Button textOnly onClick={handleCloseCart}>Close</Button>
-            <Button onClick={handleGoToCheckout}>Go to checkout</Button>
+            {cartContext.items.length > 0 && (<Button onClick={handleGoToCheckout}>Go to checkout</Button>)}
         </p>
     </Modal>;
 }
