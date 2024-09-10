@@ -20,7 +20,8 @@ export default function Checkout() {
         data,
         isLoading,
         error,
-        sendRequest
+        sendRequest,
+        clearData
     } = useHttp('http://localhost:3000/orders', requestConfig);
 
     const cartContext = useContext(CartContext);
@@ -32,6 +33,12 @@ export default function Checkout() {
 
     function handleClose() {
         userProgressContext.hideCheckout();
+    }
+
+    function handleFinish() {
+        userProgressContext.hideCheckout();
+        cartContext.clearCart();
+        clearData();
     }
 
     function handleSubmit(event) {
@@ -63,12 +70,12 @@ export default function Checkout() {
     }
 
     if (data && !error) {
-        return <Modal open={userProgressContext.progress === 'checkout'} onClose={handleClose}>
+        return <Modal open={userProgressContext.progress === 'checkout'} onClose={handleFinish}>
             <h2>Success</h2>
             <p>Your order was placed successfully!</p>
             <p>We will get back to your with more details via email within the next few minutes.</p>
             <div className="modal-actions">
-                <Button textOnly onClick={handleClose}>Okay</Button>
+                <Button textOnly onClick={handleFinish}>Okay</Button>
             </div>
         </Modal>;
     }
