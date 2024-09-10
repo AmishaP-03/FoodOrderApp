@@ -22,7 +22,7 @@ export default function Cart() {
         userProgressContext.showCheckout();
     }
 
-    return <Modal className="cart" open={userProgressContext.progress === 'cart'}>
+    return <Modal className="cart" open={userProgressContext.progress === 'cart'} onClose={userProgressContext.progress === 'cart' ? handleCloseCart : null}>
         <h2>Your Cart</h2>
         <ul>
             {cartContext.items.map((item) => <CartItem key={item.id} item={item}></CartItem>)}

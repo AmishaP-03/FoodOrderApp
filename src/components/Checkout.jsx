@@ -18,7 +18,7 @@ export default function Checkout() {
         userProgressContext.hideCheckout();
     }
 
-    return <Modal open={userProgressContext.progress === 'checkout'}>
+    return <Modal open={userProgressContext.progress === 'checkout'} onClose={handleClose}>
         <form>
             <h2>Checkout</h2>
             <p>Total price: {currencyFormatter.format(totalPriceToPay)}</p>

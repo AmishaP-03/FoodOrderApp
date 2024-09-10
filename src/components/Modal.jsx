@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-export default function Modal({children, open, cssClass}) {
+export default function Modal({children, open, cssClass, onClose}) {
     const dialog = useRef();
 
     // To open the dialog programatically
@@ -15,7 +15,7 @@ export default function Modal({children, open, cssClass}) {
     }, [open]);
 
     return createPortal( // so that we can inject this modal in the rquired place in DOM
-        <dialog ref={dialog} className={`${cssClass} modal`}>{children}</dialog>,
+        <dialog ref={dialog} className={`${cssClass} modal`} onClose={onClose}>{children}</dialog>,
         document.getElementById("modal")
     );
 }
